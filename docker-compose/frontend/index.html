@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Frontend App</title>
+</head>
+<body>
+  <h1>Message App</h1>
+
+  <form id="messageForm">
+    <input type="text" id="messageInput" placeholder="Enter message" required />
+    <button type="submit">Send</button>
+  </form>
+
+  <button onclick="fetchMessages()">Get Messages</button>
+
+  <ul id="messageList"></ul>
+
+  <script>
+    const form = document.getElementById('messageForm');
+    const input = document.getElementById('messageInput');
+    const list = document.getElementById('messageList');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const text = input.value;
+      if (!text) return;
+
+      try {
+        const res = await fetch('/api/messages', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text })
+        });
+
+        if (res.ok) {
+          input.value = '';
+          fetchMessages();
+        } else {
+          alert('Error submitting message');
+        }
+      } catch (err) {
+        alert('Network error');
+        console.error(err);
+      }
+    });
+
+    async function fetchMessages() {
+      try {
+        const res = await fetch('/api/messages');
+        const data = await res.json();
+        list.innerHTML = '';
+        data.forEach(msg => {
+          const li = document.createElement('li');
+          li.textContent = msg;
+          list.appendChild(li);
+        });
+      } catch (err) {
+        alert('Failed to fetch messages');
+        console.error(err);
+      }
+    }
+  </script>
+</body>
+</html>
