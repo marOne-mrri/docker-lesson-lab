@@ -10,8 +10,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "cd docker-build/static-app"
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ./docker-build/static-app"
                 }
             }
         }
