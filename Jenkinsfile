@@ -21,7 +21,7 @@ pipeline {
                     // Stop and remove existing container if exists
                     sh "docker rm -f ${IMAGE_NAME}-container || true"
                     // Run the new container
-                    sh "docker run -d --name ${IMAGE_NAME}-container -p 8080:80 ${IMAGE_NAME}:${IMAGE_TAG}"
+                    sh "docker run -d --name ${IMAGE_NAME}-container -p 9090:80 ${IMAGE_NAME}:${IMAGE_TAG}"
                 }
             }
         }
